@@ -22,8 +22,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(400).json(payload);
       }
 
-      const result = await fetch(payload.supergraphSchemaURL)
-      console.log("Supergraph file", result.body)
+      const sdl = await fetch(payload.supergraphSchemaURL).then(res => res.text());
+      console.log("Supergraph file", sdl)
       // Save stream buffer to external store here....
     }
 
