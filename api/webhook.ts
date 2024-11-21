@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { GraphOSResponse } from './_graphos-types';
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method !== "POST") {
       res.status(405).json({ error: "Method Not Allowed" });
@@ -16,6 +16,13 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
     if (isGraphOSResponse(payload)) {
       console.log("Received GraphOS response:", payload.eventID, payload.eventType)
+
+      if (payload.buildSucceeded !== true) {
+        res.status(400).json(payload);
+      }
+
+      const result = await fetch(payload.supergraphSchemaURL)
+      console.log("Supergraph file", result)
     }
 
     // Return a response (optional)
