@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { GraphOSResponse } from './_graphos-types';
+import { Readable } from 'node:stream';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -22,7 +23,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       const result = await fetch(payload.supergraphSchemaURL)
-      console.log("Supergraph file", result)
+      console.log("Supergraph file", result.body)
+      // Save stream buffer to external store here....
     }
 
     // Return a response (optional)
